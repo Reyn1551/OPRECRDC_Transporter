@@ -3,8 +3,8 @@
 #include <ArduinoJson.h>
 
 // Konfigurasi WiFi
-const char* ssid = "Neo2";
-const char* password = "indonesi2";
+const char* ssid = ":)";
+const char* password = "12345678";
 
 // Konfigurasi Motor
 struct MotorConfig {
@@ -517,7 +517,7 @@ void setup() {
     Serial.println(ssid);
     
     while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
+        delay(2000);
         Serial.print(".");
     }
     
