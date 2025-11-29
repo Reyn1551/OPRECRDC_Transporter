@@ -21,12 +21,17 @@ struct MotorConfig {
 
 // Konfigurasi Gripper
 struct GripperConfig {
-    const uint8_t GRIPPER_PIN = 12;     // Pin untuk servo atau motor gripper
+    const uint8_t GRIPPER_LEFT_PIN = 12;  // Pin untuk servo gripper kiri
+    const uint8_t GRIPPER_RIGHT_PIN = 15; // Pin untuk servo gripper kanan (PIN BARU)
     const uint8_t LIFT_PIN = 13;        // Pin untuk motor pengangkat gripper
-    const uint8_t GRIPPER_OPEN = 180;   // Nilai PWM untuk membuka gripper
-    const uint8_t GRIPPER_CLOSE = 0;    // Nilai PWM untuk menutup gripper
-    const uint8_t LIFT_UP = 200;        // Nilai PWM untuk mengangkat
-    const uint8_t LIFT_DOWN = 50;       // Nilai PWM untuk menurunkan
+
+    // Asumsi servo kiri dan kanan bekerja berlawanan arah untuk menjepit
+    const uint8_t GRIPPER_LEFT_OPEN = 180;   // Nilai PWM servo kiri untuk membuka
+    const uint8_t GRIPPER_LEFT_CLOSE = 90;   // Nilai PWM servo kiri untuk menutup
+    const uint8_t GRIPPER_RIGHT_OPEN = 0;    // Nilai PWM servo kanan untuk membuka
+    const uint8_t GRIPPER_RIGHT_CLOSE = 90;  // Nilai PWM servo kanan untuk menutup
+    const uint8_t LIFT_UP = 200;         // Nilai PWM untuk mengangkat
+    const uint8_t LIFT_DOWN = 50;        // Nilai PWM untuk menurunkan
 } gripper;
 
 // Global variables
@@ -46,7 +51,8 @@ void initializePins() {
     pinMode(motor.ENB, OUTPUT);
     
     // Gripper pins
-    pinMode(gripper.GRIPPER_PIN, OUTPUT);
+    pinMode(gripper.GRIPPER_LEFT_PIN, OUTPUT);
+    pinMode(gripper.GRIPPER_RIGHT_PIN, OUTPUT);
     pinMode(gripper.LIFT_PIN, OUTPUT);
 }
 
@@ -100,12 +106,14 @@ public:
 class GripperController {
 public:
     void openGripper() {
-        analogWrite(gripper.GRIPPER_PIN, gripper.GRIPPER_OPEN);
+        analogWrite(gripper.GRIPPER_LEFT_PIN, gripper.GRIPPER_LEFT_OPEN);
+        analogWrite(gripper.GRIPPER_RIGHT_PIN, gripper.GRIPPER_RIGHT_OPEN);
         gripperOpen = true;
     }
     
     void closeGripper() {
-        analogWrite(gripper.GRIPPER_PIN, gripper.GRIPPER_CLOSE);
+        analogWrite(gripper.GRIPPER_LEFT_PIN, gripper.GRIPPER_LEFT_CLOSE);
+        analogWrite(gripper.GRIPPER_RIGHT_PIN, gripper.GRIPPER_RIGHT_CLOSE);
         gripperOpen = false;
     }
     
